@@ -49,7 +49,7 @@ extern UART_HandleTypeDef huart8;
 extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart6;
-
+extern TIM_HandleTypeDef htim6;
 /******************************************************************************/
 /*            Cortex-M7 Processor Interruption and Exception Handlers         */ 
 /******************************************************************************/
@@ -335,6 +335,25 @@ void UART8_IRQHandler(void)
   /* USER CODE END UART8_IRQn 1 */
 }
 
+void TIM6_DAC_IRQHandler(void)
+{
+	NVIC_ClearPendingIRQ(TIM6_DAC_IRQn);
+    if(TIM6->SR & TIM_SR_UIF)
+        {
+        TIM6->SR &= ~TIM_SR_UIF; // Clear UIF flag for TIM6
+        if (gtimeslot <7)
+            { gtimeslot++;
+            }
+        else {
+            gtimeslot=0;
+
+// DataTransmit(0,0); // This would be where we could call DataTransmit to transmit the syncpulse
+            }
+    }
+
+  HAL_TIM_IRQHandler(&htim6);
+
+}
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
