@@ -5,6 +5,7 @@
 #include "usb_host.h"
 #include "System Initialization.h"
 
+TIM_HandleTypeDef htim6;
 
 /* SYSTEM INITIALIZATION FOR UART CHANNELS 2-8, GPIOs (LED 1 & 2, User Button, and LED for USB power on
  and over current) */
@@ -354,6 +355,23 @@ void SystemClock_Config(void)
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
    }
+
+/* MX_TIM6_Init
+Has no inputs or outputs. 
+This module initializes general timer 6 to create an interrupt every 13.3ms to aid the system in timeslot transmissions.
+*/
+static void MX_TIM6_Init(void)
+{
+    __enable_irq();
+        NVIC_SetPriority(TIM6_DAC_IRQn,0);
+        NVIC_ClearPendingIRQ(TIM6_DAC_IRQn);
+        NVIC_EnableIRQ(TIM6_DAC_IRQn);
+    RCC -> APB1ENR|= (RCC_APB1ENR_TIM6EN|RCC_APB1ENR_TIM7EN);
+    TIM6->DIER |=1; // interrupt enable
+    TIM6->PSC = 99; // Scale the clock by 99+1
+    TIM6->ARR = 2118; // Auto-Reload Register set to 2118+1
+    TIM6->CR1 |= 1; // Start counting
+}
 
 
 #ifdef USE_FULL_ASSERT
