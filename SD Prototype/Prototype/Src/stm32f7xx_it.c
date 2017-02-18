@@ -37,7 +37,12 @@
 #include "System Initialization.h"
 
 /* USER CODE BEGIN 0 */
+void usb_write(uint32_t);
 
+void usb_write(uint32_t data, uint sensorNumber)
+{
+    //use existing test code from writing to USB to write in format - sensorNumber-data/n
+}
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
