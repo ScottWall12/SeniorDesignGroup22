@@ -36,13 +36,27 @@
 #include "stm32f7xx_it.h"
 #include "System Initialization.h"
 
-/* USER CODE BEGIN 0 */
-void usb_write(uint32_t);
+uint8_t new_packet2 = 1;
+uint8_t new_packet3 = 1;
+uint8_t new_packet4 = 1;
+uint8_t new_packet5 = 1;
+uint8_t new_packet6 = 1;
+uint8_t new_packet7 = 1;
+uint8_t packet2_length;
+uint8_t packet3_length;
+uint8_t packet4_length;
+uint8_t packet5_length;
+uint8_t packet6_length;
+uint8_t packet7_length;
+uint8_t location2;
+uint8_t location3;
+uint8_t location4;
+uint8_t location5;
+uint8_t location6;
+uint8_t location7;
 
-void usb_write(uint32_t data, uint sensorNumber)
-{
-    //use existing test code from writing to USB to write in format - sensorNumber-data/n
-}
+/* USER CODE BEGIN 0 */
+
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -55,6 +69,13 @@ extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart6;
 extern TIM_HandleTypeDef htim6;
+
+extern uint32_t data2[];
+extern uint32_t data3[];
+extern uint32_t data4[];
+extern uint32_t data5[];
+extern uint32_t data6[];
+extern uint32_t data7[];
 /******************************************************************************/
 /*            Cortex-M7 Processor Interruption and Exception Handlers         */ 
 /******************************************************************************/
@@ -196,15 +217,26 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f7xx.s).                    */
 /******************************************************************************/
-
 /**
 * @brief This function handles USART2 global interrupt.
 */
 void USART2_IRQHandler(void)
 {
-  /* USER CODE BEGIN USART2_IRQn 0 */
+  if(new_packet2){
+	uint32_t data;
+    HAL_UART_Receive_IT(huart2, data, 1);
+    //LOGIC FOR FINDING AND SETTING PACKET LENGTH GOES HERE
+    //WRITE USB
+    new_packet2 = 0;
+    location2=1;
+  }else{
+	  HAL_UART_Receive_IT(huart2, data2[location2], 1);
+	  location2++;
+	  if(location2==packet2_length){
+		  new_packet2=1;
+	  }
+  }
 
-  /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
 
@@ -216,9 +248,21 @@ void USART2_IRQHandler(void)
 */
 void USART3_IRQHandler(void)
 {
-  /* USER CODE BEGIN USART3_IRQn 0 */
+  if(new_packet3){
+    uint32_t data;
+    HAL_UART_Receive_IT(huart3, data, 1);
+    //LOGIC FOR FINDING AND SETTING PACKET LENGTH GOES HERE
+    //WRITE USB
+    new_packet3 = 0;
+    location3=1;
+  }else{
+	  HAL_UART_Receive_IT(huart3, data3[location3], 1);
+	  location3++;
+	  if(location3==packet3_length){
+		  new_packet3=1;
+	  }
+ }
 
-  /* USER CODE END USART3_IRQn 0 */
   HAL_UART_IRQHandler(&huart3);
   /* USER CODE BEGIN USART3_IRQn 1 */
 
@@ -303,9 +347,21 @@ void OTG_FS_IRQHandler(void)
 */
 void USART6_IRQHandler(void)
 {
-  /* USER CODE BEGIN USART6_IRQn 0 */
+  if(new_packet6){
+    uint32_t data;
+    HAL_UART_Receive_IT(huart6, data, 1);
+    //LOGIC FOR FINDING AND SETTING PACKET LENGTH GOES HERE
+    //WRITE USB
+    new_packet6 = 0;
+    location6=1;
+  }else{
+	  HAL_UART_Receive_IT(huart6, data6[location6], 1);
+	  location6++;
+	  if(location6==packet6_length){
+		  new_packet6=1;
+	  }
+ }
 
-  /* USER CODE END USART6_IRQn 0 */
   HAL_UART_IRQHandler(&huart6);
   /* USER CODE BEGIN USART6_IRQn 1 */
 
@@ -317,9 +373,21 @@ void USART6_IRQHandler(void)
 */
 void UART7_IRQHandler(void)
 {
-  /* USER CODE BEGIN UART7_IRQn 0 */
+  if(new_packet7){
+    uint32_t data;
+    HAL_UART_Receive_IT(huart7, data, 1);
+    //LOGIC FOR FINDING AND SETTING PACKET LENGTH GOES HERE
+    //WRITE USB
+    new_packet7 = 0;
+    location7=1;
+  }else{
+	  HAL_UART_Receive_IT(huart7, data7[location7], 1);
+	  location7++;
+	  if(location7==packet7_length){
+		  new_packet7=1;
+	  }
+ }
 
-  /* USER CODE END UART7_IRQn 0 */
   HAL_UART_IRQHandler(&huart7);
   /* USER CODE BEGIN UART7_IRQn 1 */
 
