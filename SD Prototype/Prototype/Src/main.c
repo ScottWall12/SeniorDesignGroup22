@@ -56,13 +56,13 @@ newslot=gtimeslot; // update the current time slot value
 void system_Init() {
     /* System Initialize */
     MX_GPIO_Init();
-    MX_USART2_UART_Init();
-    MX_UART4_Init();
-    MX_USART3_UART_Init();
-    MX_TIM6_Init();
-    MX_UART5_Init();
-    MX_USART6_UART_Init();
-    MX_UART7_Init();
+ //   MX_USART2_UART_Init();
+   // MX_UART4_Init();
+   // MX_USART3_UART_Init();
+   // MX_TIM6_Init();
+    //MX_UART5_Init();
+    //MX_USART6_UART_Init();
+    //MX_UART7_Init();
     MX_UART8_Init();
     MX_NVIC_Init();
     MX_USB_HOST_Init();
@@ -79,7 +79,7 @@ The global variable gtimeslot is updated in the timer 2 interrupt, every time a 
 
 
 void DataTransmit(Data_IN, DataSize)
-{
+{ uint8_t* Data_IN;
 	switch(gtimeslot)
 	{
 	case 0:  break; //syncpulse time slot
@@ -90,7 +90,7 @@ void DataTransmit(Data_IN, DataSize)
 	case 5: HAL_UART_Transmit(&huart8, Data_IN, DataSize,50); break;
 	case 6: HAL_UART_Transmit(&huart8, Data_IN, DataSize,50); break;
 	case 7: HAL_UART_Transmit(&huart8, Data_IN, DataSize,50); break;
-	default:
+	default: break;
 	}
 	
 }
